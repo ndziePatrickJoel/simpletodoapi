@@ -12,10 +12,23 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        apidoc:
+            pattern:  ^/api/doc
+            stateless: true
             anonymous: true
-            lazy: true
-            provider: app_user_provider
+        api:
+            pattern: ^/api/
+            guard:
+                authenticators:
+                    - App\Security\BasicAuthenticator
+                entry_point: App\Security\BasicAuthenticator
+
+        default:
+            anonymous: true
+            guard:
+                authenticators:
+                    - App\Security\BasicAuthenticator
+                entry_point: App\Security\BasicAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -26,5 +39,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/api, roles: ROLE_USER }

@@ -17,6 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\TodoListRepository")
  */
 class TodoList{
+
+    public  const CREATED_STATE = 'CREATED';
+    public  const PENDING_STATE = 'PENDING';
+    public  const COMPLETED_STATE = 'COMPLETED';
+
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

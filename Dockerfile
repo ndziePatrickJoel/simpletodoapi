@@ -1,18 +1,30 @@
-FROM phpdockerio/php73-cli
+FROM diceprime/php72:base
 
-# Install FPM
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get update \
-    && apt-get -y --no-install-recommends install php7.3-fpm \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+WORKDIR /var/www/html
 
-# PHP-FPM packages need a nudge to make them docker-friendly
-COPY overrides.conf /etc/php/7.3/fpm/pool.d/z-overrides.conf
+COPY . .
 
-# PHP-FPM has really dirty logs, certainly not good for dockerising
-# The following startup script contains some magic to clean these up
-COPY php-fpm-startup /usr/bin/php-fpm
+COPY parameters/.htaccess public/.htaccess
 
-# Open up fcgi port
-EXPOSE 9000
+RUN rm index.html
+
+RUN rm composer.lock
+
+RUN composer install
+
+RUN APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+
+RUN APP_ENV=prod APP_DEBUG=0 php bin/console assets:install
+
+RUN rm -f .env*
+
+COPY .emptyenv .env.prod
+
+COPY .emptyenv .env
+
+RUN chmod -R 777 var/log
+
+RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/bin/supervisord"]

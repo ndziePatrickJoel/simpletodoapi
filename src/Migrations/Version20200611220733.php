@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200610190601 extends AbstractMigration
+final class Version20200611220733 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,8 +23,8 @@ final class Version20200610190601 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) DEFAULT NULL, firstname VARCHAR(255) DEFAULT NULL, lastname VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649F85E0677 (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE item (id INT AUTO_INCREMENT NOT NULL, todo_list_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, description LONGTEXT DEFAULT NULL, state ENUM(\'CREATED\', \'PENDING\', \'COMPLETED\'), created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, started_at DATETIME DEFAULT NULL, ended_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, expected_end_date DATETIME DEFAULT NULL, completion_time INT DEFAULT NULL, updated_at DATETIME DEFAULT NULL, INDEX IDX_1F1B251EE8A7DCFA (todo_list_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE todo_list (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, description LONGTEXT DEFAULT NULL, create_at DATETIME NOT NULL, update_at DATETIME DEFAULT NULL, state ENUM(\'CREATED\', \'PENDING\', \'COMPLETED\'), completion_rate DOUBLE PRECISION DEFAULT \'0\' NOT NULL, INDEX IDX_1B199E07A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE item (id INT AUTO_INCREMENT NOT NULL, todo_list_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, description LONGTEXT DEFAULT NULL, state ENUM(\'CREATED\', \'PENDING\', \'COMPLETED\'), created_at DATETIME DEFAULT NULL, started_at DATETIME DEFAULT NULL, ended_at DATETIME DEFAULT NULL, expected_end_date DATETIME DEFAULT NULL, completion_time INT DEFAULT NULL, updated_at DATETIME DEFAULT NULL, INDEX IDX_1F1B251EE8A7DCFA (todo_list_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE todo_list (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(512) NOT NULL, description LONGTEXT DEFAULT NULL, create_at DATETIME NOT NULL, update_at DATETIME DEFAULT NULL, state ENUM(\'CREATED\', \'PENDING\', \'COMPLETED\'), completion_rate DOUBLE PRECISION DEFAULT \'0\', INDEX IDX_1B199E07A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE item ADD CONSTRAINT FK_1F1B251EE8A7DCFA FOREIGN KEY (todo_list_id) REFERENCES todo_list (id)');
         $this->addSql('ALTER TABLE todo_list ADD CONSTRAINT FK_1B199E07A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
     }

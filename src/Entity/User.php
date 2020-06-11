@@ -5,12 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -61,8 +62,16 @@ class User implements UserInterface
         $this->todoLists = new ArrayCollection();
     }
 
-   
-
+    public function jsonSerialize()
+    {
+        return [
+            'username' => $this->username,
+            'roles' => $this->roles,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname
+        ];
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -141,54 +150,6 @@ class User implements UserInterface
         return $this->username;
     }
 
-    public function getApiToken(): ?string
-    {
-        return $this->apiToken;
-    }
-
-    public function setApiToken(?string $apiToken): self
-    {
-        $this->apiToken = $apiToken;
-
-        return $this;
-    }
-
-    public function getTokenCreateDate(): ?\DateTimeInterface
-    {
-        return $this->tokenCreateDate;
-    }
-
-    public function setTokenCreateDate(?\DateTimeInterface $tokenCreateDate): self
-    {
-        $this->tokenCreateDate = $tokenCreateDate;
-
-        return $this;
-    }
-
-    public function getTokenExpiresIn(): ?int
-    {
-        return $this->tokenExpiresIn;
-    }
-
-    public function setTokenExpiresIn(?int $tokenExpiresIn): self
-    {
-        $this->tokenExpiresIn = $tokenExpiresIn;
-
-        return $this;
-    }
-
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getFirstname(): ?string
     {

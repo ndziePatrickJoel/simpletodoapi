@@ -17,6 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Item{
 
+    public  const CREATED_STATE = 'CREATED';
+    public  const PENDING_STATE = 'PENDING';
+    public  const COMPLETED_STATE = 'COMPLETED';
 
     /**
      * @ORM\Column(type="integer")

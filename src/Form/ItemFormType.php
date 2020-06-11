@@ -7,8 +7,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Item;
+use App\Entity\TodoList;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class ItemFormType extends AbstractType
 {
@@ -17,7 +20,9 @@ class ItemFormType extends AbstractType
     {
         
         $builder->add('name', TextType::class)
-                ->add('description', TextareaType::class);
+                ->add('description', TextareaType::class)
+                ->add('state', TextType::class, ['required' => false])
+                ->add('todoList', EntityType::class, ['class' => TodoList::class, 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -8,15 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\Country;
 use App\Entity\TodoList;
 use App\Form\TodoListFormType;
 use Symfony\Component\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\Security\Core\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Nelmio\ApiDocBundle\Annotation\Model;
+
 
 
 
@@ -72,7 +71,7 @@ class TodoListController extends AbstractController
             return $object->getId();
         }]);
 
-        return Response::create(
+        return new Response(
             $jsonObject,
             Response::HTTP_OK,
             ['content-type' => 'application/json']
@@ -102,6 +101,26 @@ class TodoListController extends AbstractController
         
         $todoList = $existingTodoList ? $existingTodoList : new TodoList();
 
+        if (TodoList::COMPLETED_STATE == $todoList->getState()) {
+            return new JsonResponse(
+                [
+                    'error' => 'Unauthaurized operation',
+                    'errorDescription' => "Can update a COMPLETED item",
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        if ((TodoList::CREATED_STATE == $todoList->getState() && TodoList::COMPLETED_STATE == $data['state']) || (TodoList::PENDING_STATE == $todoList->getState() && TodoList::CREATED_STATE == $data['state'])) {
+            return new JsonResponse(
+                [
+                    'error' => 'Unauthaurized operation',
+                    'errorDescription' => "Can not transition from CREATED to COMPLETED",
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
         $form = $this->createForm(TodoListFormType::class, $todoList);
 
         $form->submit($data);
@@ -113,7 +132,7 @@ class TodoListController extends AbstractController
             {
                 $errors[] = $error->getMessage();
             }
-            return JsonResponse::create(
+            return new JsonResponse(
                 [
                     'error' => 'Bad request',
                     'errorDescription' => "Validation failed with the following message ".json_encode($errors)
@@ -141,7 +160,7 @@ class TodoListController extends AbstractController
             return $object->getId();
         }]);
 
-        return Response::create(
+        return new Response(
             $jsonObject,
             Response::HTTP_OK,
             ['content-type' => 'application/json']
@@ -164,14 +183,20 @@ class TodoListController extends AbstractController
 
         if(!$item)
         {
-            throw new NotFoundHttpException("The object you try to get does not exists");
+            return new JsonResponse(
+                [
+                    'error' => 'Object not found',
+                    'errorDescription' => 'The object you try to get does not exists '
+                ],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         $jsonObject = $this->serializer->serialize($item, 'json', ['circular_reference_handler' => function($object){
             return $object->getId();
         }]);
 
-        return Response::create(
+        return new Response(
             $jsonObject,
             Response::HTTP_OK,
             ['content-type' => 'application/json']
