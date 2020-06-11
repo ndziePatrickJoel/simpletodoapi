@@ -26,4 +26,4 @@ docker exec -it test_container php /var/www/html/bin/phpunit
 docker rmi -f diceprime/todoapi:latest
 
 # update an AWS ECS service with the new image
-ecs-deploy -c $CLUSTER_NAME -n $SERVICE_NAME -i $IMAGE_REPO_URL:latest
+ecs-deploy -c $CLUSTER_NAME -n $SERVICE_NAME -i diceprime/todoapi:latest

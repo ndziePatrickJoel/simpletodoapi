@@ -10,13 +10,13 @@ RUN rm index.html
 
 RUN rm composer.lock
 
-RUN composer install
-
 RUN rm -f .env*
 
 COPY .emptyenv .env.prod
 
 COPY .emptyenv .env
+
+RUN composer install
 
 RUN APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
 
