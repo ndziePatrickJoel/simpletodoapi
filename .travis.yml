@@ -7,6 +7,5 @@ deploy:
   provider: script
   # specify the deployment script
   script: bash deploy.sh
-  # specify to deploy with code change a given branch
   on:
     branch: master
