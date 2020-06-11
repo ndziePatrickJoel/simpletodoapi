@@ -12,15 +12,15 @@ RUN rm composer.lock
 
 RUN composer install
 
-RUN APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
-
-RUN APP_ENV=prod APP_DEBUG=0 php bin/console assets:install
-
 RUN rm -f .env*
 
 COPY .emptyenv .env.prod
 
 COPY .emptyenv .env
+
+RUN APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+
+RUN APP_ENV=prod APP_DEBUG=0 php bin/console assets:install
 
 RUN chmod -R 777 var/log
 

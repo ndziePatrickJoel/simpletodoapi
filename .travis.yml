@@ -3,6 +3,12 @@ language: generic
 services:
   - docker
 
+before_install:
+  - docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_PSW
+  # build the docker image and push to an image repository
+  - docker build -t diceprime/todoapi:latest .
+  - docker push diceprime/todoapi:latest
+
 deploy:
   provider: script
   # specify the deployment script
