@@ -8,7 +8,6 @@ use App\Form\ItemFormType;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Psr\Log\LoggerInterface;
 use Swagger\Annotations as SWG;
-use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,18 +36,18 @@ class ItemController extends AbstractController
 
     /**
      * 
-     * @OA\Response(
+     * @SWG\Response(
      *     response=200,
      *     description="The created item",
-     *     @OA\Schema(
-     *             @OA\Property(property="code", type="integer"),
-     *             @OA\Property(property="messages",
-     *                ref=@Model(type=Item::class, groups={})
+     *     @SWG\Schema(
+     *             @SWG\Property(property="code", type="integer"),
+     *             @SWG\Property(property="messages",
+     *                ref=@Model(type=Item::class, groups={"full"})
      *             )
      *        )
      * )
      *
-     * @OA\Tag(name="Item")
+     * @SWG\Tag(name="Item")
      * 
      * @Route("/api/items", name="create_or_update_an_item", methods={"PUT"})
      */
