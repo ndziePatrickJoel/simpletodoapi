@@ -17,17 +17,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 
 
-
-
-
 class TodoListController extends AbstractController
 {
-    private $omService;
     private $logger;
-    private $translator;
     private $serializer;
     private $security;
-    private $utils;
 
 
     public function __construct( 

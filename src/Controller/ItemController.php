@@ -8,20 +8,19 @@ use App\Form\ItemFormType;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Psr\Log\LoggerInterface;
 use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 
+
 class ItemController extends AbstractController
 {
-    private $omService;
     private $logger;
-    private $translator;
     private $serializer;
     private $utils;
     private $security;
@@ -37,19 +36,21 @@ class ItemController extends AbstractController
     }
 
     /**
-     * @Route("/api/items", name="create_or_update_an_item", methods="PUT")
-     * @SWG\Response(
+     * 
+     * @OA\Response(
      *     response=200,
      *     description="The created item",
-     *     @SWG\Schema(
-     *             @SWG\Property(property="code", type="integer"),
-     *             @SWG\Property(property="messages",
-     *                ref=@Model(type=Item::class, groups={"full"})
+     *     @OA\Schema(
+     *             @OA\Property(property="code", type="integer"),
+     *             @OA\Property(property="messages",
+     *                ref=@Model(type=Item::class, groups={})
      *             )
      *        )
      * )
      *
-     * @SWG\Tag(name="Item")
+     * @OA\Tag(name="Item")
+     * 
+     * @Route("/api/items", name="create_or_update_an_item", methods={"PUT"})
      */
     public function create(Request $request)
     {
