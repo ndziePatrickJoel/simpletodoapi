@@ -16,12 +16,11 @@ sudo chmod +x /usr/bin/ecs-deploy
 # eval $(aws ecr get-login --region us-east-1)
 
 # or login DockerHub
+docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_PSW
 
+# build the docker image and push to an image repository
 
-docker run -d -v  --name test_container -e "APP_ENV=prod" -e "DATABASE_URL=$DATABASE_URL" -e "APP_SECRET=d93eac76d89ca352fc00878672daf0c2" -e "TIME_ZONE=Africa/Douala"  diceprime/todoapi:latest
-
-docker exec -it test_container php /var/www/html/bin/phpunit 
-
+docker run  --name test_container --env APP_ENV=prod --env DATABASE_URL=$DATABASE_URL --env APP_SECRET=d93eac76d89ca352fc00878672daf0c2   diceprime/todoapi:latest php /var/www/html/bin/phpunit
 
 docker rmi -f diceprime/todoapi:latest
 

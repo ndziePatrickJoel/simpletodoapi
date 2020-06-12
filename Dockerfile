@@ -10,8 +10,6 @@ RUN rm index.html
 
 RUN rm composer.lock
 
-RUN rm -f .env*
-
 COPY .emptyenv .env.prod
 
 COPY .emptyenv .env
@@ -21,6 +19,10 @@ RUN composer install
 RUN APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
 
 RUN APP_ENV=prod APP_DEBUG=0 php bin/console assets:install
+
+RUN rm -f .env*
+
+RUN echo 'APP_ENV=prod' > .env
 
 RUN chmod -R 777 var/log
 
