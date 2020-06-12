@@ -19,8 +19,6 @@ class TodoListRepository extends ServiceEntityRepository
         parent::__construct($registry, TodoList::class);
     }
 
-
-
     public function search($query, $limit, $offset): ?array
     {        
         

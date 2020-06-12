@@ -36,12 +36,10 @@ class CreateTodoListTest extends WebTestCase
     }
 
     /**
-     * @testdox we test if a mobile transfer is received from outside
+     * @testdox test a todoList is created
      */
     public function testSuccessfullTodoListCreation()
     {
-        //Mock object to get the entity manager from
-
         $todoList = $this->createTodoList();
 
         $this->client->request('PUT',

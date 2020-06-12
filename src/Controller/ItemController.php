@@ -162,6 +162,8 @@ class ItemController extends AbstractController
      */
     public function search(Request $request, $id, int $offset = 1, int $limit = 10)
     {
+        try
+        {
         $query = $request->query->get('query');
 
         $items = $this->getDoctrine()->getManager()->getRepository(Item::class)->search($query, $offset, $limit, $id);
@@ -174,6 +176,16 @@ class ItemController extends AbstractController
             Response::HTTP_OK,
             ['content-type' => 'application/json']
         );
+        }
+        catch(\Exception $ex)
+        {
+            $this->logger->critical($ex->getMessage());
+            
+            return new JsonResponse(
+                [],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     /**
