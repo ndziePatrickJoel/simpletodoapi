@@ -9,7 +9,10 @@ use JsonSerializable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @author ndziePatrickJoel
+ * This class represent a TodoList, a TodoList is made up of many item
+ * @ORM\Entity
+ * @ORM\Table
  */
 class User implements UserInterface, JsonSerializable
 {
